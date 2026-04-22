@@ -9,7 +9,7 @@ const protect = async (req, res, next) => {
   if (!token) return res.status(401).json({ message: 'Not authorized, no token' });
 
   try {
-    const secret = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
+    const secret = process.env.JWT_SECRET || 'v3rc3l_s3cr3t_fallback_123';
     const decoded = jwt.verify(token, secret);
     req.user = await User.findById(decoded.id).select('-password');
     if (!req.user) return res.status(401).json({ message: 'User not found' });
