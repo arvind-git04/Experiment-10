@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 
@@ -16,7 +16,7 @@ export default function Register() {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post('/api/auth/register', { ...form, role: 'user' });
+      const { data } = await api.post('/api/auth/register', { ...form, role: 'user' });
       login(data);
       toast.success(`Welcome, ${data.user.name}! 🎬`);
       navigate('/movies');

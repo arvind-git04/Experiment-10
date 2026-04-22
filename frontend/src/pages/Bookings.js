@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 
@@ -10,7 +10,7 @@ export default function Bookings() {
 
   const fetchBookings = () => {
     setLoading(true);
-    axios.get('/api/bookings')
+    api.get('/api/bookings')
       .then(res => setBookings(res.data))
       .catch(() => toast.error('Failed to load bookings'))
       .finally(() => setLoading(false));
@@ -21,7 +21,7 @@ export default function Bookings() {
   const handleCancel = async (id) => {
     if (!window.confirm('Cancel this booking?')) return;
     try {
-      await axios.put(`/api/bookings/${id}/cancel`);
+      await api.put(`/api/bookings/${id}/cancel`);
       toast.success('Booking cancelled');
       fetchBookings();
     } catch (err) {

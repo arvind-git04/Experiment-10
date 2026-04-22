@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import toast from 'react-hot-toast';
 
 export default function Shows() {
@@ -12,12 +12,12 @@ export default function Shows() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('/api/movies').then(r => setMovies(r.data)).catch(() => {});
+    api.get('/api/movies').then(r => setMovies(r.data)).catch(() => {});
   }, []);
 
   useEffect(() => {
     setLoading(true);
-    axios.get('/api/shows', { params: movieFilter ? { movieId: movieFilter } : {} })
+    api.get('/api/shows', { params: movieFilter ? { movieId: movieFilter } : {} })
       .then(res => setShows(res.data))
       .catch(() => toast.error('Failed to load shows'))
       .finally(() => setLoading(false));

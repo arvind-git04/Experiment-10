@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import toast from 'react-hot-toast';
 
 const EMPTY = {
@@ -20,7 +20,7 @@ export default function ManageMovies() {
 
   const fetchMovies = () => {
     setLoading(true);
-    axios.get('/api/movies')
+    api.get('/api/movies')
       .then(res => setMovies(res.data))
       .catch(() => toast.error('Failed to load movies'))
       .finally(() => setLoading(false));
@@ -55,10 +55,10 @@ export default function ManageMovies() {
         cast: form.cast.split(',').map(c => c.trim()).filter(Boolean),
       };
       if (editId) {
-        await axios.put(`/api/movies/${editId}`, payload);
+        await api.put(`/api/movies/${editId}`, payload);
         toast.success('Movie updated');
       } else {
-        await axios.post('/api/movies', payload);
+        await api.post('/api/movies', payload);
         toast.success('Movie added');
       }
       setShowModal(false);
@@ -73,7 +73,7 @@ export default function ManageMovies() {
   const handleDelete = async (id) => {
     if (!window.confirm('Remove this movie?')) return;
     try {
-      await axios.delete(`/api/movies/${id}`);
+      await api.delete(`/api/movies/${id}`);
       toast.success('Movie removed');
       fetchMovies();
     } catch {

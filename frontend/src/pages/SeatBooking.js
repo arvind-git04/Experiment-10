@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import toast from 'react-hot-toast';
 
 export default function SeatBooking() {
@@ -13,7 +13,7 @@ export default function SeatBooking() {
   const [booking, setBooking] = useState(false);
 
   useEffect(() => {
-    axios.get(`/api/shows/${showId}`)
+    api.get(`/api/shows/${showId}`)
       .then(res => setShow(res.data))
       .catch(() => { toast.error('Show not found'); navigate('/shows'); })
       .finally(() => setLoading(false));
@@ -40,7 +40,7 @@ export default function SeatBooking() {
     if (!selected.length) return toast.error('Please select at least one seat');
     setBooking(true);
     try {
-      const { data } = await axios.post('/api/bookings', { showId, seats: selected, paymentMode });
+      const { data } = await api.post('/api/bookings', { showId, seats: selected, paymentMode });
       toast.success(`Booking confirmed! Ref: ${data.bookingRef}`);
       navigate('/bookings');
     } catch (err) {

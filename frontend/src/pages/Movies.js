@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import toast from 'react-hot-toast';
 
 const GENRES = ['Action', 'Comedy', 'Drama', 'Horror', 'Romance', 'Sci-Fi', 'Thriller', 'Animation'];
@@ -14,7 +14,7 @@ export default function Movies() {
 
   const fetchMovies = () => {
     setLoading(true);
-    axios.get('/api/movies', { params: { search, genre } })
+    api.get('/api/movies', { params: { search, genre } })
       .then(res => setMovies(res.data))
       .catch(() => toast.error('Failed to load movies'))
       .finally(() => setLoading(false));

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import toast from 'react-hot-toast';
 
 export default function Dashboard() {
@@ -7,7 +7,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('/api/dashboard/stats')
+    api.get('/api/dashboard/stats')
       .then(res => setStats(res.data))
       .catch(() => toast.error('Failed to load dashboard'))
       .finally(() => setLoading(false));

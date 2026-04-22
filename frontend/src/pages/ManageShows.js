@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import toast from 'react-hot-toast';
 
 const EMPTY_SHOW = {
@@ -20,24 +20,24 @@ export default function ManageShows() {
   const fetchData = () => {
     setLoading(true);
     Promise.all([
-      axios.get('/api/shows', { params: {} }).then(r => r.data),
-      axios.get('/api/movies').then(r => r.data),
+      api.get('/api/shows', { params: {} }).then(r => r.data),
+      api.get('/api/movies').then(r => r.data),
     ]).then(([showsData, moviesData]) => {
       // Fetch all shows (including past) for admin view
       setMovies(moviesData);
-      return axios.get('/api/shows').then(r => setShows(r.data));
+      return api.get('/api/shows').then(r => setShows(r.data));
     }).catch(() => toast.error('Failed to load data'))
       .finally(() => setLoading(false));
 
     // Separate fetch to get all shows for admin
-    axios.get('/api/shows').then(r => setShows(r.data)).catch(() => {});
-    axios.get('/api/movies').then(r => setMovies(r.data)).catch(() => {});
+    api.get('/api/shows').then(r => setShows(r.data)).catch(() => {});
+    api.get('/api/movies').then(r => setMovies(r.data)).catch(() => {});
     setLoading(false);
   };
 
   useEffect(() => {
-    axios.get('/api/movies').then(r => setMovies(r.data)).catch(() => {});
-    axios.get('/api/shows').then(r => { setShows(r.data); setLoading(false); }).catch(() => setLoading(false));
+    api.get('/api/movies').then(r => setMovies(r.data)).catch(() => {});
+    api.get('/api/shows').then(r => { setShows(r.data); setLoading(false); }).catch(() => setLoading(false));
   }, []);
 
   const openAdd = () => { setForm(EMPTY_SHOW); setEditId(null); setShowModal(true); };
@@ -77,14 +77,14 @@ export default function ManageShows() {
         },
       };
       if (editId) {
-        await axios.put(`/api/shows/${editId}`, payload);
+        await api.put(`/api/shows/${editId}`, payload);
         toast.success('Show updated');
       } else {
-        await axios.post('/api/shows', payload);
+        await api.post('/api/shows', payload);
         toast.success('Show created');
       }
       setShowModal(false);
-      axios.get('/api/shows').then(r => setShows(r.data));
+      api.get('/api/shows').then(r => setShows(r.data));
     } catch (err) {
       toast.error(err.response?.data?.message || 'Save failed');
     } finally {
@@ -95,7 +95,7 @@ export default function ManageShows() {
   const handleDelete = async (id) => {
     if (!window.confirm('Cancel this show?')) return;
     try {
-      await axios.delete(`/api/shows/${id}`);
+      await api.delete(`/api/shows/${id}`);
       toast.success('Show cancelled');
       setShows(prev => prev.filter(s => s._id !== id));
     } catch {

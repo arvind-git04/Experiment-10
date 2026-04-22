@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 
@@ -16,7 +16,7 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await axios.post('/api/auth/login', form);
+      const { data } = await api.post('/api/auth/login', form);
       login(data);
       toast.success(`Welcome back, ${data.user.name}!`);
       navigate(data.user.role === 'admin' ? '/dashboard' : '/movies');

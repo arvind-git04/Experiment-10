@@ -4,9 +4,7 @@
   "description": "Full-stack Movie Ticket Booking System",
   "main": "backend/server.js",
   "scripts": {
-    "postinstall": "cd frontend && npm install && cd ..",
-    "build": "cd frontend && npm run build && cd ..",
-    "start": "npm run build && node backend/server.js",
+    "start": "node backend/server.js",
     "dev": "nodemon backend/server.js"
   },
   "dependencies": {
