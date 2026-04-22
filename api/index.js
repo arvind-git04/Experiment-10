@@ -41,11 +41,27 @@ app.use(async (req, res, next) => {
 // Netlify will serve the frontend from the root/build directory
 
 // API Routes
-app.use('/api/auth',   require('./routes/auth'));
-app.use('/api/movies', require('./routes/movies'));
-app.use('/api/shows',  require('./routes/shows'));
-app.use('/api/bookings', require('./routes/bookings'));
-app.use('/api/dashboard', require('./routes/dashboard'));
+const authRoutes = require('./routes/auth');
+const movieRoutes = require('./routes/movies');
+const showRoutes = require('./routes/shows');
+const bookingRoutes = require('./routes/bookings');
+const dashboardRoutes = require('./routes/dashboard');
+
+// Support both /api/auth and /auth paths
+app.use('/api/auth', authRoutes);
+app.use('/auth',     authRoutes);
+
+app.use('/api/movies', movieRoutes);
+app.use('/movies',     movieRoutes);
+
+app.use('/api/shows', showRoutes);
+app.use('/shows',     showRoutes);
+
+app.use('/api/bookings', bookingRoutes);
+app.use('/bookings',     bookingRoutes);
+
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/dashboard',     dashboardRoutes);
 
 // Health check and root status
 app.get('/health', (req, res) => res.json({ message: 'Movie Ticket Booking API is running (Serverless) ✅' }));
