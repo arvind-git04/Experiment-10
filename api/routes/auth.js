@@ -4,7 +4,8 @@ const User = require('../models/User');
 const { protect } = require('../middleware/auth');
 
 const signToken = (id) => {
-  const secret = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
+  const secret = process.env.JWT_SECRET || 'v3rc3l_s3cr3t_fallback_123';
+  console.log('Signing token with secret exists:', !!secret);
   return jwt.sign({ id }, secret, { expiresIn: '7d' });
 };
 

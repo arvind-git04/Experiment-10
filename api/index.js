@@ -33,7 +33,11 @@ app.use(async (req, res, next) => {
     await connectDB();
     next();
   } catch (err) {
-    res.status(500).json({ message: 'Database connection error' });
+    res.status(500).json({ 
+      message: 'Database connection error', 
+      error: err.message,
+      hint: 'Check if your MONGO_URI is correct and IP 0.0.0.0/0 is whitelisted in MongoDB Atlas'
+    });
   }
 });
 
