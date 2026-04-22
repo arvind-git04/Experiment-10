@@ -10,13 +10,7 @@ dotenv.config();
 const app = express();
 
 // Middleware
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:5000',
-  process.env.FRONTEND_URL
-].filter(Boolean);
-
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
 // Serve static files - REMOVED for Netlify serverless deployment

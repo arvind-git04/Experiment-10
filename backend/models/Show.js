@@ -49,4 +49,4 @@ showSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = mongoose.model('Show', showSchema);
+module.exports = mongoose.models.Show || mongoose.model('Show', showSchema);

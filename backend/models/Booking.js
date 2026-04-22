@@ -22,4 +22,4 @@ bookingSchema.pre('save', function (next) {
   next();
 });
 
-module.exports = mongoose.model('Booking', bookingSchema);
+module.exports = mongoose.models.Booking || mongoose.model('Booking', bookingSchema);
