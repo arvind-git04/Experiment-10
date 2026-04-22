@@ -3,8 +3,10 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { protect } = require('../middleware/auth');
 
-const signToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+const signToken = (id) => {
+  const secret = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
+  return jwt.sign({ id }, secret, { expiresIn: '7d' });
+};
 
 // Register
 router.post('/register', async (req, res) => {
