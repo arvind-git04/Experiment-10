@@ -10,12 +10,18 @@ const protect = async (req, res, next) => {
 
   try {
     const secret = process.env.JWT_SECRET || 'v3rc3l_s3cr3t_fallback_123';
+    console.log('Middleware: Checking token with secret exists:', !!secret);
     const decoded = jwt.verify(token, secret);
+    console.log('Middleware: Decoded ID:', decoded.id);
     req.user = await User.findById(decoded.id).select('-password');
-    if (!req.user) return res.status(401).json({ message: 'User not found' });
+    if (!req.user) {
+      console.log('Middleware: User not found in DB for ID:', decoded.id);
+      return res.status(401).json({ message: 'User not found' });
+    }
     next();
-  } catch {
-    res.status(401).json({ message: 'Token invalid or expired' });
+  } catch (err) {
+    console.error('Middleware: Auth Error:', err.message);
+    res.status(401).json({ message: 'Token invalid or expired', error: err.message });
   }
 };
 
