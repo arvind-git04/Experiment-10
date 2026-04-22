@@ -4,9 +4,10 @@
   "description": "Full-stack Movie Ticket Booking System",
   "main": "backend/server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js",
-    "build": "echo 'Build complete'"
+    "postinstall": "cd frontend && npm install && cd ..",
+    "build": "cd frontend && npm run build && cd ..",
+    "start": "npm run build && node backend/server.js",
+    "dev": "nodemon backend/server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
